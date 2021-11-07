@@ -3,7 +3,7 @@ const Database = require('../database/database');
 
 const apiRouter = express.Router();
 
-apiRouter.get('/persons', (req, res, next) => {
+apiRouter.get('/', (req, res, next) => {
     const db = new Database('./phonebooks');
     if(db.isKeyExists('phonebook1')) {
         const data = db.get('phonebook1');
@@ -15,7 +15,7 @@ apiRouter.get('/persons', (req, res, next) => {
     }
 })
 
-apiRouter.get('/persons/:id', (req, res, next) => {
+apiRouter.get('/:id', (req, res, next) => {
     const id = req.params.id;
     const db = new Database('./phonebooks');
     const data = db.get('phonebook1');
@@ -30,7 +30,7 @@ apiRouter.get('/persons/:id', (req, res, next) => {
 })
 
 
-apiRouter.delete('/persons/:id', (req, res, next) => {
+apiRouter.delete('/:id', (req, res, next) => {
     const id = req.params.id;
     const db = new Database('./phonebooks');
     const data = db.get('phonebook1');
@@ -46,7 +46,7 @@ apiRouter.delete('/persons/:id', (req, res, next) => {
     }
 })
 
-apiRouter.post('/persons', (req, res, next) => {
+apiRouter.post('/', (req, res, next) => {
     const person = req.body.person;
     person.id = generateId();
     if(person.hasOwnProperty('name') && person.hasOwnProperty('number')) {
