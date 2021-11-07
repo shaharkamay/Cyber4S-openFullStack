@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-module.exports = class Database {
+class Database {
     #dir = './';
     #fs = {};
 
@@ -101,3 +101,7 @@ class ReadOnlyEntry extends Entry {
         throw 'Cannot update read-only entries';
     }
 }
+
+
+
+module.exports =  Database;
