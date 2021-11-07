@@ -1,0 +1,26 @@
+{
+  "name": "Cyber4S-openFullStack",
+  "version": "1.0.0",
+  "description": "In this repository we are going to particpating work in the openFullStack platform",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon ./src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shaharkamay/Cyber4S-openFullStack.git"
+  },
+  "keywords": [],
+  "author": "Shahar Kamay <shahar.kamay@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shaharkamay/Cyber4S-openFullStack/issues"
+  },
+  "homepage": "https://github.com/shaharkamay/Cyber4S-openFullStack#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.14"
+  }
+}
