@@ -21,5 +21,5 @@ app.use('/info', infoRouter);
 
 // start the server
 app.listen(port, () => {
-    console.log('app started');
+    console.log('app started!');
 });
