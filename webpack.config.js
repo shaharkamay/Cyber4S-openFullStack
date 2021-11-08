@@ -11,9 +11,14 @@ const stylesHandler = 'style-loader';
 
 
 const config = {
-    entry: './front/index.js',
+    entry: {
+        index: './front/index.js',
+        info: './front/htmlPages/info.js'
+    },
     output: {
         path: path.resolve(__dirname, 'dist'),
+        assetModuleFilename: "images/[name][ext][query]",
+        clean: true,
     },
     devServer: {
         open: true,
@@ -21,7 +26,14 @@ const config = {
     },
     plugins: [
         new HtmlWebpackPlugin({
+            filename: 'index.html',
             template: './front/index.html',
+            chunks: ['index']
+        }),
+        new HtmlWebpackPlugin({
+            filename: 'info.html',
+            template: './front/htmlPages/info.html',
+            chunks: ['info']
         }),
 
         // Add your plugins here
@@ -42,7 +54,7 @@ const config = {
                 use: [stylesHandler, 'css-loader', 'sass-loader'],
             },
             {
-                test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
+                test: /\.(eot|svg|ttf|woff|woff2|png|jpg|jpeg|gif)$/i,
                 type: 'asset',
             },
 
