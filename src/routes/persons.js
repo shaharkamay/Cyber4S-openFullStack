@@ -31,6 +31,7 @@ personRouter.get('/:id', (req, res, next) => {
 
 
 personRouter.delete('/:id', (req, res, next) => {
+    console.log(req.params);
     const id = req.params.id;
     const db = new Database('./phonebooks');
     const data = db.get('phonebook1');
@@ -47,7 +48,7 @@ personRouter.delete('/:id', (req, res, next) => {
 })
 
 personRouter.post('/', (req, res, next) => {
-    const person = req.body.person;
+    const person = req.body;
     if(person.hasOwnProperty('name') && person.hasOwnProperty('number')) {
         person.id = generateId();
         const db = new Database('./phonebooks');

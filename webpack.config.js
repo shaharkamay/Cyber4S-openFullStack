@@ -13,7 +13,7 @@ const stylesHandler = 'style-loader';
 const config = {
     entry: {
         index: './front/index.js',
-        info: './front/htmlPages/info.js'
+        addContact: './front/htmlPages/addContact.js' 
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -31,9 +31,9 @@ const config = {
             chunks: ['index']
         }),
         new HtmlWebpackPlugin({
-            filename: 'info.html',
-            template: './front/htmlPages/info.html',
-            chunks: ['info']
+            filename: "addContact.html",
+            template: "./front/htmlPages/addContact.html",
+            chunks: ["addContact"],
         }),
 
         // Add your plugins here

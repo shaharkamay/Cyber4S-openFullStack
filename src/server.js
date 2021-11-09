@@ -16,6 +16,9 @@ app.use(express.static(path.resolve('./dist')));
 app.get('/', (req, res) => {
     res.sendFile(path.resolve('./dist/index.html'));
 });
+app.get('/addContact', (req, res) => {
+    res.sendFile(path.resolve('./dist/addContact.html'));
+});
 
 app.use(morganMiddleware, morgan(":method :url :status :res[content-length] - :response-time ms :body"));
 
