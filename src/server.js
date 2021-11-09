@@ -1,13 +1,24 @@
 const express = require('express');
+const cors = require('cors');
 const personRouter = require('./routes/persons.js')
 const infoRouter = require('./routes/info.js')
 const morgan = require('morgan');
+const path = require('path');
 const morganMiddleware = require('./middleware/morgan.js');
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 app.use(express.json());
+app.use(cors());
+
+app.use(express.static(path.resolve('./dist')));
+app.get('/', (req, res) => {
+    res.sendFile(path.resolve('./dist/index.html'));
+});
+app.get('/addContact', (req, res) => {
+    res.sendFile(path.resolve('./dist/addContact.html'));
+});
 
 app.use(morganMiddleware, morgan(":method :url :status :res[content-length] - :response-time ms :body"));
 
@@ -16,5 +27,5 @@ app.use('/info', infoRouter);
 
 // start the server
 app.listen(port, () => {
-    console.log('app started');
+    console.log('app started!');
 });
