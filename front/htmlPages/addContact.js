@@ -1,5 +1,6 @@
 import "./addContact.scss";
 import axios from "axios";
+const baseUrl = "/";
 
 
 
@@ -17,7 +18,7 @@ async function addContact(event) {
          if(validateFirstName(firstName) && validateLastName(lastName) && validateNumber(number)){             
              label.innerText = "Loading...";
             console.log("inside the if of add contact")
-            const response =await axios.post("http://localhost:3001/api/persons", {
+            const response =await axios.post(`${baseUrl}api/persons`, {
                 name: firstName + " " + lastName,
                 number: number
             });
