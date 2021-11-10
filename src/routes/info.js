@@ -11,8 +11,8 @@ infoRouter.get('/', async (req, res, next) => {
         res.json(`Phonebook has info for ${countPeople} people\n${date} (United States Standard Time)`);
         res.end();
     } catch (error) {
-        res.status(502).json('Cannot connect to the database');
-        // next({ status: 502, message: 'Cannot connect to the database' });
+        // res.status(502).json('Cannot connect to the database');
+        next({ status: 502, message: 'Cannot connect to the database' });
     }
 })
 

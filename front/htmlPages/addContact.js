@@ -18,13 +18,28 @@ async function addContact(event) {
          if(validateFirstName(firstName) && validateLastName(lastName) && validateNumber(number)){             
              label.innerText = "Loading...";
             console.log("inside the if of add contact")
-            const response =await axios.post(`${baseUrl}api/persons`, {
-                name: firstName + " " + lastName,
-                number: number
-            });
-            label.innerText = `Added ${firstName} ${lastName} Successfuly`    
+            let response;
+            try {
+                response = await axios.post(`${baseUrl}api/persons`, {
+                    name: firstName + " " + lastName,
+                    number: number,
+                });
+                label.innerText = `Added ${firstName} ${lastName} Successfuly`;
+            } catch (error) {
+                console.log(error.response)
+                if (error.response.status === 409) {
+                    try {
+                        response = await axios.put(`${baseUrl}api/persons`, {
+                            name: firstName + " " + lastName,
+                            number: number,
+                        });
+                        label.innerText = `Updated ${firstName} ${lastName}`;
+                    } catch (error) {
+                        displayError(error.response.data.message);
+                    }
+                }
+            }
             setTimeout(()=>{label.innerText=""}, 3*1000);  
-            
          }        
     } catch(error){
         label.innerText = "";
@@ -60,3 +75,14 @@ function validateNumber(number){
     console.log("Number is not invaid");
     return false;
 }
+
+function displayError(text) {
+    const errorDiv = document.getElementById("errorDiv");
+    errorDiv.style.display = "inline";
+    errorDiv.innerText = text;
+    setTimeout(() => {
+        errorDiv.innerText = "";
+        errorDiv.style.display = "none";
+    }, 3 * 1000);
+}
+  

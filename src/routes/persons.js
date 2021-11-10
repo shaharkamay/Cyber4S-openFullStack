@@ -10,8 +10,8 @@ personRouter.get('/', async (req, res, next) => {
         res.json(persons);
         res.end();
     } catch (error) {
-        res.status(404).json('Phonebook not found!');
-        // next({ status: 404, message: 'Phonebook not found!' });
+        // res.status(404).json('Phonebook not found!');
+        next({ status: 404, message: 'Phonebook not found!' });
     }
 })
 
@@ -25,12 +25,12 @@ personRouter.get('/:id', async (req, res, next) => {
             res.json(person);
             res.end();
         } else {
-            res.status(404).json('Person not found!');
-            // next({ status: 404, message: 'Person not found!' });
+            // res.status(404).json('Person not found!');
+            next({ status: 404, message: 'Person not found!' });
         }
     } catch (error) {
-        res.status(502).json('Cannot connect to the database');
-        // next({ status: 502, message: 'Cannot connect to the database' });
+        // res.status(502).json('Cannot connect to the database');
+        next({ status: 502, message: 'Cannot connect to the database' });
     }
 })
 
@@ -43,12 +43,12 @@ personRouter.delete('/:id', async (req, res, next) => {
             res.json('person deleted successfully');
             res.end();
         } else {
-            res.status(404).json('Person not found!');
-            // next({ status: 404, message: 'Person not found!' });
+            // res.status(404).json('Person not found!');
+            next({ status: 404, message: 'Person not found!' });
         }
     } catch (error) {
-        res.status(502).json('Cannot connect to the database');
-        // next({ status: 502, message: 'Cannot connect to the database' });
+        // res.status(502).json('Cannot connect to the database');
+        next({ status: 502, message: 'Cannot connect to the database' });
     }
 })
 
@@ -56,25 +56,41 @@ personRouter.post('/', async (req, res, next) => {
     const person = Object.assign({}, req.body);
     if(person.hasOwnProperty('name') && person.hasOwnProperty('number')) {
         person.id = generateId();
-        const persons = await Person.find({});
-        if(persons) {
-            if(isNameExists(person.name, persons)) {
-                res.status(409).json('Person already exists!');
-                // next({ status: 409, message: 'Person already exists!' });
-            } else {
-                await createNewPerson(person.id, person.name, person.number);
-                res.json("Person added successfully!");
-                res.end();
-            }
+        if(await isNameExists(person.name)) {
+            next({ status: 409, message: 'Person already exists!' });
         } else {
-            res.status(502).json('Cannot connect to the database');
-            // next({ status: 502, message: 'Cannot connect to the database!' });
+            await createNewPerson(person.id, person.name, person.number);
+            res.json("Person added successfully!");
+            res.end();
         }
     } else {
-        res.status(400).json('Bad Request!');
-        // next({ status: 400, message: 'Bad Request!' });
+        // res.status(400).json('Bad Request!');
+        return next({ status: 400, message: 'Bad Request!' });
     }
 })
+
+personRouter.put("/", async (req, res, next) => {
+    const newPerson = Object.assign({}, req.body);
+    if (
+    !newPerson.hasOwnProperty("name") ||
+    !newPerson.hasOwnProperty("number")
+    ) {
+        // res.status(400).json('Bad Request!');
+        // next({ status: 400, message: 'Bad Request!' });
+    } else {
+        if (await isNameExists(newPerson.name)) {
+            if (await updatePerson(newPerson.name, newPerson.number)) {
+                res.json(`Updated ${newPerson.name}`);
+                res.end();
+            } else {
+                next({ status: 502, message: 'Cannot connect to the database' });
+            }
+        } else {
+            next({ status: 404, error: "Name Not Found!" });
+        }
+    }
+});
+  
 
 function generateId() {
     return Number(Math.random().toString(10).substr(2, 4));
@@ -94,8 +110,16 @@ async function createNewPerson(id, name, number) {
     }
 }
 
-function isNameExists(name, persons) {
-    return persons.findIndex((person) => person.name === name) !== -1;
-  }
+async function isNameExists(name) {
+    const persons = await Person.find({});
+    return persons.findIndex((obj) => obj.name === name) !== -1;
+}
+
+async function updatePerson(name, number) {
+    const isUpdated = (await Person.updateOne({ name: name }, { number: number })).matchedCount > 0;
+    return isUpdated;
+}
+  
+  
 
 module.exports = personRouter;

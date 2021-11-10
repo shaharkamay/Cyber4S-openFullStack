@@ -5,6 +5,7 @@ const infoRouter = require('./routes/info.js')
 const morgan = require('morgan');
 const path = require('path');
 const morganMiddleware = require('./middleware/morgan.js');
+const { errorHandler } = require('./error-handling/error-handler.js');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
@@ -37,6 +38,7 @@ app.use(morganMiddleware, morgan(":method :url :status :res[content-length] - :r
 
 app.use('/api/persons', personRouter);
 app.use('/info', infoRouter);
+app.use(errorHandler);
 
 // start the server
 app.listen(port, () => {

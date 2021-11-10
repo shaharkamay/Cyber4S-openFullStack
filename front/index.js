@@ -18,12 +18,12 @@ async function renderPhoneBook(persons) {
 // rightdiv build
       const callIcon = createElement("i", [], ["fas fa-phone"]);
       // <i class="fas fa-info-circle" id="info" data-container="body" data-toggle="popover" data-placement="right">
-      const info =createElement("i",[],["fas","fa-info-circle"],{"data-container":"body", "data-toggle":"popover" , "data-id":`${person._id}`},{"click":openContactInfo})
       const deleteIcon = createElement("i", [], ["fas fa-minus-circle"]);
       const callBtn = createElement("button", [callIcon], ["button-call"],{"data-toggle":"modal", "data-target":"#callPersonModal","data-number":`${person.number}`, "data-name":`${person.name}`},
       {"click":onCallClick});
+      const info =createElement("i",[],["fas","fa-info-circle"],{"data-container":"body", "data-toggle":"popover" , "data-id":`${person._id}`},{"click":openContactInfo})
       const deleteBtn = createElement("button",[deleteIcon],["button-delete"],{"data-id":person._id},{"click":deletePhone});
-      const rightDiv = createElement("div", [info,callBtn, deleteBtn],[]);
+      const rightDiv = createElement("div", [callBtn, deleteBtn, info],[]);
     //   left div build
       const span = createElement("span", [person.number],[]);
       const a = createElement("a", [person.name, span],);
