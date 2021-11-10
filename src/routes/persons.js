@@ -36,7 +36,6 @@ personRouter.get('/:id', async (req, res, next) => {
 
 
 personRouter.delete('/:id', async (req, res, next) => {
-    console.log(req.params);
     const id = Number(req.params.id);
     try {
         const isDeleted = (await Person.collection.deleteOne({ _id: id })).deletedCount > 0;

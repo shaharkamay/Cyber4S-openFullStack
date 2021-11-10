@@ -32,6 +32,8 @@ async function renderPhoneBook(persons) {
       phoneBook.append(li);
     }
   } catch (error) {}
+
+  document.querySelector('.info-div').textContent = await getPhoneBookInfo();
 }
 
 function sortArray(array){
@@ -55,8 +57,8 @@ getDataBase();
 async function deletePhone(event) {
     event.target.closest("LI").remove();
     const id = event.target.closest('BUTTON').dataset.id;
-    console.log(id)
     await axios.delete(`${baseUrl}api/persons/${id}`);
+    document.querySelector('.info-div').textContent = await getPhoneBookInfo();
 }
   
 function createElement(
@@ -123,8 +125,6 @@ document.getElementById('info1').addEventListener('mouseover', mouseoverInfoHand
 async function mouseoverInfoHandler(e) {
     const infoDiv = document.querySelector('.info-div');
     infoDiv.classList.remove("display-none");
-    const phoneBookInfo = await getPhoneBookInfo();
-    infoDiv.append(phoneBookInfo);
     const left = e.pageX;
     const top = e.pageY;
     const divHeight = infoDiv.offsetHeight;
@@ -135,7 +135,6 @@ async function mouseoverInfoHandler(e) {
 function mouseoutInfoHandler(e) {
   const infoDiv = document.querySelector(".info-div");
   infoDiv.classList.add("display-none");
-  while(infoDiv.firstChild) infoDiv.removeChild(infoDiv.firstChild);
   e.target.removeEventListener('mouseout', mouseoutInfoHandler);
 }
 async function getPhoneBookInfo() {
