@@ -139,6 +139,6 @@ function mouseoutInfoHandler(e) {
   e.target.removeEventListener('mouseout', mouseoutInfoHandler);
 }
 async function getPhoneBookInfo() {
-  const response = await axios.get(`http://localhost:3001/info`);
+  const response = await axios.get(`${baseUrl}info`);
   return response.data;
 }
