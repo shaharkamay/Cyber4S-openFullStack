@@ -17,7 +17,6 @@ async function addContact(event) {
         console.log("number") 
          if(validateFirstName(firstName) && validateLastName(lastName) && validateNumber(number)){             
              label.innerText = "Loading...";
-            console.log("inside the if of add contact")
             let response;
             try {
                 response = await axios.post(`${baseUrl}api/persons`, {
@@ -26,7 +25,6 @@ async function addContact(event) {
                 });
                 label.innerText = `Added ${firstName} ${lastName} Successfuly`;
             } catch (error) {
-                console.log(error.response)
                 if (error.response.status === 409) {
                     try {
                         response = await axios.put(`${baseUrl}api/persons`, {

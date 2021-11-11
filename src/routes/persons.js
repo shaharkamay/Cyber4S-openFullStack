@@ -56,13 +56,17 @@ personRouter.post('/', async (req, res, next) => {
     const person = Object.assign({}, req.body);
     if(person.hasOwnProperty('name') && person.hasOwnProperty('number')) {
         person.id = generateId();
-        if(await isNameExists(person.name)) {
-            next({ status: 409, message: 'Person already exists!' });
-        } else {
+        // if(await isNameExists(person.name)) {
+            // next({ status: 409, message: 'Person already exists!' });
+        // } else {
+        try {
             await createNewPerson(person.id, person.name, person.number);
             res.json("Person added successfully!");
             res.end();
+        } catch (error) {
+            next({ status: 409, message: error._message });
         }
+        // }
     } else {
         // res.status(400).json('Bad Request!');
         return next({ status: 400, message: 'Bad Request!' });
@@ -96,18 +100,14 @@ function generateId() {
     return Number(Math.random().toString(10).substr(2, 4));
 }
 
-function isPersonExists(persons, name) {
-    return persons.find((person) => person.name === name);
-}
-
 async function createNewPerson(id, name, number) {
     const person = new Person({ _id: id, name: name, number: number });
-    try {
-        await person.save();
-        return true;
-    } catch (error) {
-        return false;
-    }
+    // try {
+    await person.save();
+    //     return true;
+    // } catch (error) {
+    //     return false;
+    // }
 }
 
 async function isNameExists(name) {
